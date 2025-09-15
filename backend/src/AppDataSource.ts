@@ -1,0 +1,22 @@
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+import { Curso } from "./models/Curso.js";
+import { Estudante } from "./models/Estudante.js";
+import { Professor } from "./models/Professor.js";
+import { Aula } from "./models/Aula.js";
+import { Pagamento } from "./models/Pagamento.js";
+import { Mensagem } from "./models/Mensagem.js";
+
+export const AppDataSource = new DataSource({
+  type: "mysql",
+  host: "localhost",       // ou IP do servidor
+  port: 3306,
+  username: "root",        // seu usuário MySQL
+  password: "makermusic2025",   // sua senha MySQL
+  database: "maker_music", // nome do banco que vc criou
+  synchronize: true,       // cria/atualiza tabelas automaticamente (ótimo p/ MVP)
+  logging: true,
+  entities: [Estudante, Professor, Aula, Pagamento, Mensagem,Curso],
+  migrations: [],
+  subscribers: [],
+});

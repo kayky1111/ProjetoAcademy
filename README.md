@@ -13,3 +13,4 @@ Verifique a instalação com:
 ```bash
 node -v
 npm -v
+npm install typeorm reflect-metadata
