@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Curso } from "./models/Curso.js";
-import { Estudante } from "./models/Estudante.js";
-import { Professor } from "./models/Professor.js";
-import { Aula } from "./models/Aula.js";
-import { Pagamento } from "./models/Pagamento.js";
-import { Mensagem } from "./models/Mensagem.js";
+import { Curso } from "./models/Curso";
+import { Estudante } from "./models/Estudante";
+import { Professor } from "./models/Professor";
+import { Aula } from "./models/Aula";
+import { Pagamento } from "./models/Pagamento";
+import { Mensagem } from "./models/Mensagem";
 
 export const AppDataSource = new DataSource({
   type: "mysql",

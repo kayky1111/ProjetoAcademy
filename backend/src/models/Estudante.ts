@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 // devemos usar o .js para se referir ao arquivo ts ja compilado, pois o node ESM so entende .js
-import { Pagamento } from "./Pagamento.js";
-import { Aula } from "./Aula.js";
+import { Pagamento } from "./Pagamento";
+import { Aula } from "./Aula";
 
 @Entity()
 export class Estudante {
