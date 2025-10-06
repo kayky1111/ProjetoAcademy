@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Aula = void 0;
 const typeorm_1 = require("typeorm");
-const Estudante_js_1 = require("./Estudante.js");
-const Professor_js_1 = require("./Professor.js");
-const Curso_js_1 = require("./Curso.js");
+const Estudante_1 = require("./Estudante");
+const Professor_1 = require("./Professor");
+const Curso_1 = require("./Curso");
 let Aula = class Aula {
 };
 exports.Aula = Aula;
@@ -32,16 +32,16 @@ __decorate([
     __metadata("design:type", Number)
 ], Aula.prototype, "duracao", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Estudante_js_1.Estudante, estudante => estudante.aula),
-    __metadata("design:type", Estudante_js_1.Estudante)
+    (0, typeorm_1.ManyToOne)(() => Estudante_1.Estudante, estudante => estudante.aula),
+    __metadata("design:type", Estudante_1.Estudante)
 ], Aula.prototype, "estudante", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Professor_js_1.Professor, professor => professor.aula),
-    __metadata("design:type", Professor_js_1.Professor)
+    (0, typeorm_1.ManyToOne)(() => Professor_1.Professor, professor => professor.aula),
+    __metadata("design:type", Professor_1.Professor)
 ], Aula.prototype, "professor", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Curso_js_1.Curso, curso => curso.aula),
-    __metadata("design:type", Curso_js_1.Curso)
+    (0, typeorm_1.ManyToOne)(() => Curso_1.Curso, curso => curso.aula),
+    __metadata("design:type", Curso_1.Curso)
 ], Aula.prototype, "curso", void 0);
 exports.Aula = Aula = __decorate([
     (0, typeorm_1.Entity)()

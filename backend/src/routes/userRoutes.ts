@@ -1,17 +1,48 @@
-import { Router } from "express";
-
-// Importando todas as CLASSES com letra maiúscula e caminho relativo corrigido
-// Usando a extensão .js, presumindo um ambiente Node ESM/TS compilado para JS
-import { AulaController } from "../controllers/aulaController.js";
-import { CursoController } from "../controllers/cursoController.js";
-import { EstudanteController } from "../controllers/estudanteController.js";
-import { MensagemController } from "../controllers/mensagemController.js";
-import { PagamentoController } from "../controllers/pagamentoController.js";
-import { ProfessorController } from "../controllers/professorController.js";
+import { Router } from 'express';
+import {
+  createAula,
+  deleteAula,
+  getAllAulas,
+  getAulaById,
+  updateAula,
+} from '../controllers/aulaController';
+import {
+  createCurso,
+  deleteCurso,
+  getAllCursos,
+  getCursoById,
+  updateCurso,
+} from '../controllers/cursoController';
+import {
+  createEstudante,
+  deleteEstudante,
+  getAllEstudantes,
+  getEstudanteById,
+  updateEstudante,
+} from '../controllers/estudanteController';
+import {
+  createMensagem,
+  deleteMensagem,
+  getAllMensagens,
+  getMensagemById,
+  updateMensagem,
+} from '../controllers/mensagemController';
+import {
+  createPagamento,
+  deletePagamento,
+  getAllPagamentos,
+  getPagamentoById,
+  updatePagamento,
+} from '../controllers/pagamentoController';
+import {
+  createProfessor,
+  deleteProfessor,
+  getAllProfessores,
+  getProfessorById,
+  updateProfessor,
+} from '../controllers/professorController';
 
 const router = Router();
-
-// A Instanciação dos controllers foi removida, as rotas agora usam métodos estáticos (ex: AulaController.getAll)
 
 /**
  * @swagger
@@ -25,14 +56,11 @@ const router = Router();
  * description: ID da aula.
  * nome:
  * type: string
- * description: Nome/título da aula.
+ * description: Nome da aula.
  * descricao:
  * type: string
- * description: Descrição do conteúdo da aula.
- * example:
- * id: 1
- * nome: "Introdução ao TypeScript"
- * descricao: "Uma aula sobre os conceitos básicos."
+ * description: Descrição da aula.
+ * example: "Aula de violão para iniciantes"
  * Curso:
  * type: object
  * properties:
@@ -42,9 +70,7 @@ const router = Router();
  * nome:
  * type: string
  * description: Nome do curso.
- * example:
- * id: 1
- * nome: "Desenvolvimento Web Full Stack"
+ * example: "Violão Básico"
  * Estudante:
  * type: object
  * properties:
@@ -57,11 +83,8 @@ const router = Router();
  * email:
  * type: string
  * format: email
- * description: E-mail do estudante.
- * example:
- * id: 1
- * nome: "João da Silva"
- * email: "joao.silva@email.com"
+ * description: Email do estudante.
+ * example: "aluno@example.com"
  * Professor:
  * type: object
  * properties:
@@ -73,11 +96,8 @@ const router = Router();
  * description: Nome do professor.
  * materia:
  * type: string
- * description: Área de especialização/matéria lecionada.
- * example:
- * id: 10
- * nome: "Maria Oliveira"
- * materia: "Programação Back-end"
+ * description: Matéria que o professor leciona.
+ * example: "Violão"
  * Pagamento:
  * type: object
  * properties:
@@ -87,15 +107,12 @@ const router = Router();
  * valor:
  * type: number
  * format: float
- * description: Valor pago.
+ * description: Valor do pagamento.
  * data:
  * type: string
- * format: date-time
- * description: Data e hora do pagamento.
- * example:
- * id: 100
- * valor: 49.99
- * data: "2023-10-06T10:00:00Z"
+ * format: date
+ * description: Data do pagamento.
+ * example: "2024-01-20"
  * Mensagem:
  * type: object
  * properties:
@@ -107,69 +124,52 @@ const router = Router();
  * description: Conteúdo da mensagem.
  * remetente:
  * type: string
- * description: ID do remetente (Estudante ou Professor).
- * example:
- * id: 50
- * conteudo: "Dúvida sobre a Aula 5."
- * remetente: "Estudante 1"
+ * description: Quem enviou a mensagem.
  */
 
 /**
  * @swagger
  * tags:
  * - name: Aulas
- * description: Endpoints para gerenciamento de aulas
+ * description: Operações relacionadas a aulas
  * - name: Cursos
- * description: Endpoints para gerenciamento de cursos
+ * description: Operações relacionadas a cursos
  * - name: Estudantes
- * description: Endpoints para gerenciamento de estudantes
+ * description: Operações relacionadas a estudantes
  * - name: Mensagens
- * description: Endpoints para gerenciamento de mensagens
+ * description: Operações relacionadas a mensagens
  * - name: Pagamentos
- * description: Endpoints para gerenciamento de pagamentos
+ * description: Operações relacionadas a pagamentos
  * - name: Professores
- * description: Endpoints para gerenciamento de professores
+ * description: Operações relacionadas a professores
  */
 
-// --- Rotas de Aula ---
+// Aulas
 /**
  * @swagger
  * /aulas:
  * get:
- * summary: Lista todas as aulas
+ * summary: Retorna uma lista de todas as aulas
  * tags: [Aulas]
  * responses:
  * 200:
- * description: Sucesso
+ * description: Lista de aulas retornada com sucesso.
  * content:
  * application/json:
  * schema:
  * type: array
  * items:
  * $ref: '#/components/schemas/Aula'
- * post:
- * summary: Cria uma nova aula
- * tags: [Aulas]
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/Aula'
- * responses:
- * 201:
- * description: Aula criada com sucesso
- * 400:
- * description: Dados inválidos
+ * 500:
+ * description: Erro no servidor.
  */
-router.get("/aulas", AulaController.getAll);
-router.post("/aulas", AulaController.create);
+router.get('/aulas', getAllAulas);
 
 /**
  * @swagger
  * /aulas/{id}:
  * get:
- * summary: Obtém uma aula pelo ID
+ * summary: Retorna uma aula pelo seu ID
  * tags: [Aulas]
  * parameters:
  * - in: path
@@ -177,95 +177,50 @@ router.post("/aulas", AulaController.create);
  * schema:
  * type: integer
  * required: true
- * description: ID da aula
+ * description: ID numérico da aula para obter.
  * responses:
  * 200:
- * description: Sucesso
+ * description: Aula retornada com sucesso.
  * content:
  * application/json:
  * schema:
  * $ref: '#/components/schemas/Aula'
  * 404:
- * description: Aula não encontrada
- * put:
- * summary: Atualiza uma aula pelo ID
- * tags: [Aulas]
- * parameters:
- * - in: path
- * name: id
- * schema:
- * type: integer
- * required: true
- * description: ID da aula
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/Aula'
- * responses:
- * 200:
- * description: Aula atualizada
- * 404:
- * description: Aula não encontrada
- * delete:
- * summary: Deleta uma aula pelo ID
- * tags: [Aulas]
- * parameters:
- * - in: path
- * name: id
- * schema:
- * type: integer
- * required: true
- * description: ID da aula
- * responses:
- * 204:
- * description: Aula deletada
- * 404:
- * description: Aula não encontrada
+ * description: Aula não encontrada.
+ * 500:
+ * description: Erro no servidor.
  */
-router.get("/aulas/:id", AulaController.getById);
-router.put("/aulas/:id", AulaController.update);
-router.delete("/aulas/:id", AulaController.delete);
+router.get('/aulas/:id', getAulaById);
+router.post('/aulas', createAula);
+router.put('/aulas/:id', updateAula);
+router.delete('/aulas/:id', deleteAula);
 
-
-// --- Rotas de Curso ---
+// Cursos
 /**
  * @swagger
  * /cursos:
  * get:
- * summary: Lista todos os cursos
+ * summary: Retorna uma lista de todos os cursos
  * tags: [Cursos]
  * responses:
  * 200:
- * description: Sucesso
+ * description: Lista de cursos retornada com sucesso.
  * content:
  * application/json:
  * schema:
  * type: array
  * items:
  * $ref: '#/components/schemas/Curso'
- * post:
- * summary: Cria um novo curso
- * tags: [Cursos]
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/Curso'
- * responses:
- * 201:
- * description: Curso criado
+ * 500:
+ * description: Erro no servidor.
  */
-router.get("/cursos", CursoController.getAll);
-router.post("/cursos", CursoController.create);
+router.get('/cursos', getAllCursos);
 
 /**
  * @swagger
  * /cursos/{id}:
  * get:
- * summary: Obtém um curso pelo ID
+ * summary: Retorna um curso pelo seu ID
  * tags: [Cursos]
  * parameters:
  * - in: path
@@ -273,94 +228,50 @@ router.post("/cursos", CursoController.create);
  * schema:
  * type: integer
  * required: true
- * description: ID do curso
+ * description: ID numérico do curso para obter.
  * responses:
  * 200:
- * description: Sucesso
+ * description: Curso retornado com sucesso.
  * content:
  * application/json:
  * schema:
  * $ref: '#/components/schemas/Curso'
  * 404:
- * description: Curso não encontrado
- * put:
- * summary: Atualiza um curso pelo ID
- * tags: [Cursos]
- * parameters:
- * - in: path
- * name: id
- * schema:
- * type: integer
- * required: true
- * description: ID do curso
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/Curso'
- * responses:
- * 200:
- * description: Curso atualizado
- * 404:
- * description: Curso não encontrado
- * delete:
- * summary: Deleta um curso pelo ID
- * tags: [Cursos]
- * parameters:
- * - in: path
- * name: id
- * schema:
- * type: integer
- * required: true
- * description: ID do curso
- * responses:
- * 204:
- * description: Curso deletado
- * 404:
- * description: Curso não encontrado
+ * description: Curso não encontrado.
+ * 500:
+ * description: Erro no servidor.
  */
-router.get("/cursos/:id", CursoController.getById);
-router.put("/cursos/:id", CursoController.update);
-router.delete("/cursos/:id", CursoController.delete);
+router.get('/cursos/:id', getCursoById);
+router.post('/cursos', createCurso);
+router.put('/cursos/:id', updateCurso);
+router.delete('/cursos/:id', deleteCurso);
 
-// --- Rotas de Estudante ---
+// Estudantes
 /**
  * @swagger
  * /estudantes:
  * get:
- * summary: Lista todos os estudantes
+ * summary: Retorna uma lista de todos os estudantes
  * tags: [Estudantes]
  * responses:
  * 200:
- * description: Sucesso
+ * description: Lista de estudantes retornada com sucesso.
  * content:
  * application/json:
  * schema:
  * type: array
  * items:
  * $ref: '#/components/schemas/Estudante'
- * post:
- * summary: Cria um novo estudante
- * tags: [Estudantes]
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/Estudante'
- * responses:
- * 201:
- * description: Estudante criado
+ * 500:
+ * description: Erro no servidor.
  */
-router.get("/estudantes", EstudanteController.getAll);
-router.post("/estudantes", EstudanteController.create);
+router.get('/estudantes', getAllEstudantes);
 
 /**
  * @swagger
  * /estudantes/{id}:
  * get:
- * summary: Obtém um estudante pelo ID
+ * summary: Retorna um estudante pelo seu ID
  * tags: [Estudantes]
  * parameters:
  * - in: path
@@ -368,109 +279,41 @@ router.post("/estudantes", EstudanteController.create);
  * schema:
  * type: integer
  * required: true
- * description: ID do estudante
+ * description: ID numérico do estudante para obter.
  * responses:
  * 200:
- * description: Sucesso
+ * description: Estudante retornado com sucesso.
  * content:
  * application/json:
  * schema:
  * $ref: '#/components/schemas/Estudante'
  * 404:
- * description: Estudante não encontrado
- * delete:
- * summary: Deleta um estudante pelo ID
- * tags: [Estudantes]
- * parameters:
- * - in: path
- * name: id
- * schema:
- * type: integer
- * required: true
- * description: ID do estudante
- * responses:
- * 204:
- * description: Estudante deletado
- * 404:
- * description: Estudante não encontrado
+ * description: Estudante não encontrado.
  */
-router.get("/estudantes/:id", EstudanteController.getById);
-router.put("/estudantes/:id", EstudanteController.update);
-router.delete("/estudantes/:id", EstudanteController.delete);
+router.get('/estudantes/:id', getEstudanteById);
+router.post('/estudantes', createEstudante);
+router.put('/estudantes/:id', updateEstudante);
+router.delete('/estudantes/:id', deleteEstudante);
 
-// --- Rotas de Professor ---
-/**
- * @swagger
- * /professores:
- * get:
- * summary: Lista todos os professores
- * tags: [Professores]
- * responses:
- * 200:
- * description: Sucesso
- * content:
- * application/json:
- * schema:
- * type: array
- * items:
- * $ref: '#/components/schemas/Professor'
- */
-router.get("/professores", ProfessorController.getAll);
+// Mensagens
+router.get('/mensagens', getAllMensagens);
+router.get('/mensagens/:id', getMensagemById);
+router.post('/mensagens', createMensagem);
+router.put('/mensagens/:id', updateMensagem);
+router.delete('/mensagens/:id', deleteMensagem);
 
-// Rotas completas de Professor
-router.get("/professores/:id", ProfessorController.getById);
-router.post("/professores", ProfessorController.create);
-router.put("/professores/:id", ProfessorController.update);
-router.delete("/professores/:id", ProfessorController.delete);
+// Pagamentos
+router.get('/pagamentos', getAllPagamentos);
+router.get('/pagamentos/:id', getPagamentoById);
+router.post('/pagamentos', createPagamento);
+router.put('/pagamentos/:id', updatePagamento);
+router.delete('/pagamentos/:id', deletePagamento);
 
-
-// --- Rotas de Pagamento ---
-/**
- * @swagger
- * /pagamentos:
- * get:
- * summary: Lista todos os pagamentos
- * tags: [Pagamentos]
- * responses:
- * 200:
- * description: Sucesso
- * content:
- * application/json:
- * schema:
- * type: array
- * items:
- * $ref: '#/components/schemas/Pagamento'
- */
-router.get("/pagamentos", PagamentoController.getAll);
-
-// Rotas completas de Pagamento
-router.get("/pagamentos/:id", PagamentoController.getById);
-router.post("/pagamentos", PagamentoController.create);
-router.put("/pagamentos/:id", PagamentoController.update);
-router.delete("/pagamentos/:id", PagamentoController.delete);
-
-// --- Rotas de Mensagem ---
-/**
- * @swagger
- * /mensagens:
- * get:
- * summary: Lista todas as mensagens
- * tags: [Mensagens]
- * responses:
- * 200:
- * description: Sucesso
- * content:
- * application/json:
- * schema:
- * type: array
- * items:
- * $ref: '#/components/schemas/Mensagem'
- */
-router.get("/mensagens", MensagemController.getAll);
-
-// Rotas completas de Mensagem
-router.get("/mensagens/:id", MensagemController.getById);
-router.post("/mensagens", MensagemController.create);
-router.delete("/mensagens/:id", MensagemController.delete); // Mensagens não tem PUT/Update
+// Professores
+router.get('/professores', getAllProfessores);
+router.get('/professores/:id', getProfessorById);
+router.post('/professores', createProfessor);
+router.put('/professores/:id', updateProfessor);
+router.delete('/professores/:id', deleteProfessor);
 
 export default router;

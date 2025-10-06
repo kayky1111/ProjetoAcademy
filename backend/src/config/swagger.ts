@@ -1,8 +1,6 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 
-// Configurações básicas da sua API
 const options = {
-  // Configuração principal da documentação (OpenAPI 3.0)
   definition: {
     openapi: '3.0.0',
     info: {
@@ -16,17 +14,13 @@ const options = {
         description: 'Servidor de Desenvolvimento Local',
       },
     ],
-    // Aqui incluímos os esquemas (models) definidos no userRoutes.ts
-    // Se a documentação dos schemas estiver separada, é melhor incluí-la no 'apis'
   },
-  // CRUCIAL: Lista de arquivos que contêm as anotações JSDoc do Swagger.
-  // O erro 'TypeError' geralmente ocorre se esta lista não encontrar seus arquivos.
+  // CRUCIAL: Alterar o caminho para os ficheiros compilados .js
   apis: [
-    './src/routes/*.ts', // Procura por todos os arquivos .ts na pasta 'src/routes'
+    './dist/routes/*.js', // Apontar para os ficheiros JS na pasta dist
   ],
 };
 
-// Gera a especificação final do Swagger (Swagger Spec Object)
 const swaggerSpec = swaggerJSDoc(options);
 
 export default swaggerSpec;
