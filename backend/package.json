@@ -5,7 +5,17 @@
         "typescript": "^5.9.2"
     },
     "dependencies": {
+        "@types/swagger-jsdoc": "^6.0.4",
+        "@types/swagger-ui-express": "^4.1.8",
         "express": "^5.1.0",
-        "mysql": "^2.18.1"
-    }
+        "mysql": "^2.18.1",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1"
+    },
+     "scripts": {
+        "build": "tsc",
+    "start": "node dist/server.js",
+      "dev": "npx ts-node-dev src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }

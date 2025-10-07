@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Estudante } from "./Estudante.js";
-import { Professor } from "./Professor.js";
-import { Curso } from "./Curso.js";
+import { Estudante } from "./Estudante";
+import { Professor } from "./Professor";
+import { Curso } from "./Curso";
 
 @Entity()
 export class Aula {

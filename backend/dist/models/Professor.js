@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Professor = void 0;
 const typeorm_1 = require("typeorm");
-const Aula_js_1 = require("./Aula.js");
+const Aula_1 = require("./Aula");
 let Professor = class Professor {
 };
 exports.Professor = Professor;
@@ -32,7 +32,7 @@ __decorate([
     __metadata("design:type", String)
 ], Professor.prototype, "instrumento", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Aula_js_1.Aula, aula => aula.professor),
+    (0, typeorm_1.OneToMany)(() => Aula_1.Aula, aula => aula.professor),
     __metadata("design:type", Array)
 ], Professor.prototype, "aula", void 0);
 exports.Professor = Professor = __decorate([

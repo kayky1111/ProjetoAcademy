@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pagamento = void 0;
 const typeorm_1 = require("typeorm");
-const Estudante_js_1 = require("./Estudante.js");
+const Estudante_1 = require("./Estudante");
 let Pagamento = class Pagamento {
 };
 exports.Pagamento = Pagamento;
@@ -32,8 +32,8 @@ __decorate([
     __metadata("design:type", Date)
 ], Pagamento.prototype, "data", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Estudante_js_1.Estudante, estudante => estudante.pagamento),
-    __metadata("design:type", Estudante_js_1.Estudante)
+    (0, typeorm_1.ManyToOne)(() => Estudante_1.Estudante, estudante => estudante.pagamento),
+    __metadata("design:type", Estudante_1.Estudante)
 ], Pagamento.prototype, "estudante", void 0);
 exports.Pagamento = Pagamento = __decorate([
     (0, typeorm_1.Entity)()

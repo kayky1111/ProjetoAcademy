@@ -6,37 +6,88 @@ const professorRepo = AppDataSource.getRepository(Professor);
 
 export class ProfessorController {
   static async getAll(req: Request, res: Response) {
-    const professores = await professorRepo.find({ relations: ["aula"] });
-    res.json(professores);
+    try {
+      const professores = await professorRepo.find();
+      res.status(200).json(professores);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao buscar professores", error });
+    }
   }
 
   static async getById(req: Request, res: Response) {
-    const professor = await professorRepo.findOne({
-      where: { id: Number(req.params.id) },
-      relations: ["aula"],
-    });
-    if (!professor) return res.status(404).json({ message: "Professor não encontrado" });
-    res.json(professor);
+    const { id } = req.params;
+    try {
+      const professor = await professorRepo.findOneBy({ id: parseInt(id) });
+      if (!professor) {
+        return res.status(404).json({ message: "Professor não encontrado" });
+      }
+      res.status(200).json(professor);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao buscar professor", error });
+    }
   }
 
+  /**
+   * Cria um novo professor passando o objeto de dados diretamente para o método save.
+   */
   static async create(req: Request, res: Response) {
-    const novoProfessor = professorRepo.create(req.body);
-    const saved = await professorRepo.save(novoProfessor);
-    res.status(201).json(saved);
+    const { nome, especialidade, email, senha } = req.body;
+
+    if (!nome || !especialidade || !email) {
+      return res.status(400).json({ message: "Nome, especialidade, email e senha são obrigatórios." });
+    }
+
+    try {
+      // O método .save() cria e salva a nova entidade em um único passo
+      const novoProfessor = await professorRepo.save({
+        nome,
+        especialidade,
+        email,
+        senha,
+      });
+
+      res.status(201).json(novoProfessor);
+    } catch (error) {
+      if ((error as any).code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({ message: "Este email já está cadastrado." });
+      }
+      res.status(500).json({ message: "Erro ao criar professor", error });
+    }
   }
 
   static async update(req: Request, res: Response) {
-    const professor = await professorRepo.findOneBy({ id: Number(req.params.id) });
-    if (!professor) return res.status(404).json({ message: "Professor não encontrado" });
+    const { id } = req.params;
+    const { nome, instrumento, email, } = req.body;
 
-    professorRepo.merge(professor, req.body);
-    const updated = await professorRepo.save(professor);
-    res.json(updated);
+    try {
+      const result = await professorRepo.update(id, { nome, instrumento, email });
+
+      if (result.affected === 0) {
+        return res.status(404).json({ message: "Professor não encontrado para atualização" });
+      }
+      
+      const professorAtualizado = await professorRepo.findOneBy({ id: parseInt(id) });
+      res.status(200).json(professorAtualizado);
+    } catch (error) {
+      if ((error as any).code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({ message: "Este email já está em uso por outro professor." });
+      }
+      res.status(500).json({ message: "Erro ao atualizar professor", error });
+    }
   }
 
   static async delete(req: Request, res: Response) {
-    const result = await professorRepo.delete(req.params.id);
-    if (result.affected === 0) return res.status(404).json({ message: "Professor não encontrado" });
-    res.json({ message: "Professor removido com sucesso" });
+    const { id } = req.params;
+    try {
+      const result = await professorRepo.delete(id);
+
+      if (result.affected === 0) {
+        return res.status(404).json({ message: "Professor não encontrado para deletar" });
+      }
+
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao deletar professor", error });
+    }
   }
 }

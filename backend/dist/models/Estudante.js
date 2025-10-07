@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Estudante = void 0;
 const typeorm_1 = require("typeorm");
 // devemos usar o .js para se referir ao arquivo ts ja compilado, pois o node ESM so entende .js
-const Pagamento_js_1 = require("./Pagamento.js");
-const Aula_js_1 = require("./Aula.js");
+const Pagamento_1 = require("./Pagamento");
+const Aula_1 = require("./Aula");
 let Estudante = class Estudante {
 };
 exports.Estudante = Estudante;
@@ -34,11 +34,11 @@ __decorate([
     __metadata("design:type", String)
 ], Estudante.prototype, "senha", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Pagamento_js_1.Pagamento, pagamento => pagamento.estudante),
+    (0, typeorm_1.OneToMany)(() => Pagamento_1.Pagamento, pagamento => pagamento.estudante),
     __metadata("design:type", Array)
 ], Estudante.prototype, "pagamento", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Aula_js_1.Aula, aula => aula.estudante),
+    (0, typeorm_1.OneToMany)(() => Aula_1.Aula, aula => aula.estudante),
     __metadata("design:type", Array)
 ], Estudante.prototype, "aula", void 0);
 exports.Estudante = Estudante = __decorate([

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Estudante } from "./Estudante.js";
+import { Estudante } from "./Estudante";
 
 @Entity()
 export class Pagamento {
