@@ -1,7 +1,9 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function LoginScreen() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -47,7 +49,7 @@ export default function LoginScreen() {
       </TouchableOpacity>
 
       {/* Link para Cadastro */}
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/cadastro")}>
         <Text style={styles.registerLink}>
           Não tem conta? Cadastre-se aqui
         </Text>
